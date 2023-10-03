@@ -1,7 +1,32 @@
-cmake_minimum_required(VERSION 3.26)
-project(chat)
+cmake_minimum_required(VERSION 3.19)
+project(chat_grpc)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(server server/main.cpp)
-add_executable(client client/main.cpp)
+if(MSVC)
+    add_definitions(-D_WIN32_WINNT=0x600)
+endif()
+
+find_package(Threads)
+
+set(protobuf_MODULE_COMPATIBLE TRUE)
+find_package(Protobuf CONFIG REQUIRED)
+
+set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
+set(_REFLECTION gRPC::grpc++_reflection)
+if(CMAKE_CROSSCOMPILING)
+    find_program(_PROTOBUF_PROTOC protoc)
+else()
+    set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
+endif()
+
+find_package(gRPC CONFIG REQUIRED)
+
+set(_GRPC_GRPCPP gRPC::grpc++)
+if(CMAKE_CROSSCOMPILING)
+    find_program(_GRPC_CPP_PLUGIN_EXECUTABLE grpc_cpp_plugin)
+else()
+    set(_GRPC_CPP_PLUGIN_EXECUTABLE $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
+endif()
+
+add_subdirectory(chat)

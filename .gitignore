@@ -33,3 +33,9 @@
 
 /cmake-build-debug
 /.idea
+
+# Protobuf files
+/chat/chat.grpc.pb.cc
+/chat/chat.grpc.pb.h
+/chat/chat.pb.cc
+/chat/chat.pb.h
