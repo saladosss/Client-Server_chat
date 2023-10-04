@@ -28,7 +28,7 @@ target_link_libraries(chat_grpc_proto
         ${_REFLECTION}
         ${_GRPC_GRPCPP})
 
-foreach(_target chat_client chat_server)
+foreach(_target client server)
     add_executable(${_target} "${_target}.cc")
     target_link_libraries(${_target}
             chat_grpc_proto

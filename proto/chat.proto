@@ -6,13 +6,13 @@ option java_package = "chat.grpc";
 package chat;
 
 service ChatService {
-  rpc SendMessage (Request) returns (Response) {}
+  rpc SendMessage (stream Request) returns (stream Response) {}
 }
 
 message Request {
-  string request_field = 1;
+  repeated string content = 1;
 }
 
 message Response {
-  string response_field = 1;
+  repeated string content = 1;
 }
