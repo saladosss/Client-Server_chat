@@ -1,1 +1,1 @@
-# gRPC chat in c++
+# gRPC client-server chat in c++
