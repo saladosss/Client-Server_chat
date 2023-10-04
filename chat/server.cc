@@ -14,18 +14,9 @@ using chat::Response;
 
 class ChatServiceImpl final : public ChatService::Service {
 public:
-    Status SendMessage(ServerContext* context, ServerReaderWriter<Response, Request>* stream /*const Request* request, Response* response*/) override {
-       /* std::cout << "Message from client: " << request->content() << std::endl;
-
-        std::cout << "Your message: ";
-        std::string message;
-        std::cin >> message;
-        response->set_content(message);
-        */
-
+    Status SendMessage(ServerContext* context, ServerReaderWriter<Response, Request>* stream) override {
         Request request;
         while (stream->Read(&request)) {
-            std::unique_lock<std::mutex> lock(mutex_);
             for (const auto& client_message : request.content()) {
                 std::cout << "Client message: " << client_message << std::endl;
             }
@@ -33,19 +24,14 @@ public:
 
         std::string message;
         std::cout << "Your message: ";
-//        std::cin >> message;
         getline(std::cin, message);
 
         Response response;
         response.add_content(message);
-//        for (const auto& response_ : response.content()) {
-//        }
         stream->Write(response);
 
         return Status::OK;
     }
-private:
-    std::mutex mutex_;
 };
 
 void RunServer() {
